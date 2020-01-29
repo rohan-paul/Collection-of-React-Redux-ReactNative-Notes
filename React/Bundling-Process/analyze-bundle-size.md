@@ -5,8 +5,8 @@ You can use this script to analyze, without ejecting create-react-app
 Put analyze.js in root of your project ( where the package.json is located )
 
 ```
-npm install progress-bar-webpack-plugin
-npm install webpack-bundle-analyzer
+yarn add -D webpack-bundle-analyzer
+yarn add -D progress-bar-webpack-plugin
 ```
 
 

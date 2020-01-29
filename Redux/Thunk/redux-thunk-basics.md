@@ -1,3 +1,30 @@
+The reason that we need to use a middleware such as Redux-Thunk is because the Redux store only supports synchronous data flow. Thus, middleware to the rescue! Middleware allows for asynchronous data flow, interprets anything that you dispatch and finally returns a plain object allowing the synchronous Redux data flow to resume. Redux middleware can thus solve for many critical asynchronous needs (e.g., axios requests).
+
+Redux Thunk is middleware that allows you to return functions, rather than just actions, within Redux. This allows for delayed actions, including working with promises.
+
+The reason we use this middleware is for the reason that not all the actions we perform will be synchronus and some are bound to be non synchronous, like using axios to send a get request. This will take a bit of time and simple redux does not take into to account this behavious. So, Redux-thunk comes to the rescue by allowing us to dispatch actions asynchronously, so that we can allow these promises to get resolved.
+
+#### Common Example below
+
+```js
+const GET_CURRENT_USER = 'GET_CURRENT_USER';
+const GET_CURRENT_USER_SUCCESS = 'GET_CURRENT_USER_SUCCESS';
+const GET_CURRENT_USER_FAILURE = 'GET_CURRENT_USER_FAILURE';
+
+const getUser = () => {
+  return (dispatch) => {     //nameless functions
+    // Initial action dispatched
+    dispatch({ type: GET_CURRENT_USER });
+    // Return promise with success and failure actions
+    return axios.get('/api/auth/user').then(
+      user => dispatch({ type: GET_CURRENT_USER_SUCCESS, user }),
+      err => dispatch({ type: GET_CURRENT_USER_FAILURE, err })
+    );
+  };
+};
+```
+
+
 <img src="Redux-Thunk.jpeg">
 
 #### Thus, in summary there are two parts to Redux-Thunk:
@@ -5,7 +32,6 @@
 - 1. A thunk creator, which is an action creator that returns a thunk (a.k.a. asynchronous action creators)
 - 2. The thunk itself, which is the function that is returned from the thunk creator and accepts dispatch and setState as arguments
 
-The reason that we need to use a middleware such as Redux-Thunk is because the Redux store only supports synchronous data flow. Thus, middleware to the rescue! Middleware allows for asynchronous data flow, interprets anything that you dispatch and finally returns a plain object allowing the synchronous Redux data flow to resume. Redux middleware can thus solve for many critical asynchronous needs (e.g., axios requests).
 
 ### First note that, the synchronous and pure flow of data through Redux’s components is well-defined with distinct, simple roles. Which is as below ->
 

@@ -16,6 +16,15 @@ The newState returned from the reducer is then consumed by the component via the
 
 It means that we’re making two new variables **state** and **dispatch**, where **state** is set to the first value returned by **useReducer**, and **dispatch** is the second. It is equivalent to this code:
 
+```js
+var fruitStateVariable = useState('banana'); // Returns a pair
+var fruit = fruitStateVariable[0]; // First item in a pair
+var setFruit = fruitStateVariable[1]; // Second item in a pair
+```
+
+
+When we declare a state variable with useState, it returns a pair — an array with two items. The first item is the current value, and the second is a function that lets us update it. Using [0] and [1] to access them is a bit confusing because they have a specific meaning. This is why we use array destructuring instead.
+
 Every useReducer comes with its own dispatch function. The **useReducer** function is tightly coupled to its reducer and its dispatch function. We dispatch action objects to that reducer only that useReducer() function takes as its first argument.
 
 #### Now an example to convert a useState() to a useReducer()
