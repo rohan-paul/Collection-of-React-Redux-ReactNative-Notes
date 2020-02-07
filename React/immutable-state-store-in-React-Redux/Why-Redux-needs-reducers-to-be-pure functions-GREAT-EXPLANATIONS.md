@@ -42,19 +42,21 @@ Why is Redux putting this burden on individual developers?
 
 Note that you must clone old states using slice — or a similar mechanism — to copy old values into a new object.
 
-Now, with this policy in place, you can compare two objects’ memory location using !== without having to compare each property within each object. And if the two objects are not the same, then you know that the object has changed state (that is, some property somewhere in the JavaScript object has changed). That’s exactly the strategy Redux employs to make things work.
+**Now, with this policy in place, you can compare two objects’ memory location using !== without having to compare each property within each object. And if the two objects are not the same, then you know that the object has changed state (that is, some property somewhere in the JavaScript object has changed). That’s exactly the strategy Redux employs to make things work.**
 
 So that’s why Redux needs for “Reducers” to be pure functions!
 
 Per [Redux Official Doc on Shallow Equality Checking](https://redux.js.org/faq/immutable-data#why-does-reduxs-use-of-shallow-equality-checking-require-immutability)
 
-Why does Redux’s use of shallow equality checking require immutability?
+#### Why does Redux’s use of shallow equality checking require immutability?
+
 Redux's use of shallow equality checking requires immutability if any connected components are to be updated correctly. To see why, we need to understand the difference between shallow and deep equality checking in JavaScript.
 
-How do shallow and deep equality checking differ?
-Shallow equality checking (or reference equality) simply checks that two different variables reference the same object; in contrast, deep equality checking (or value equality) must check every value of two objects' properties.
+##### How do shallow and deep equality checking differ?
 
-A shallow equality check is therefore as simple (and as fast) as a === b, whereas a deep equality check involves a recursive traversal through the properties of two objects, comparing the value of each property at each step.
+**Shallow equality checking (or reference equality) simply checks that two different variables reference the same object; in contrast, deep equality checking (or value equality) must check every value of two objects' properties.
+
+A shallow equality check is therefore as simple (and as fast) as a === b, whereas a deep equality check involves a recursive traversal through the properties of two objects, comparing the value of each property at each step.**
 
 It's for this improvement in performance that Redux uses shallow equality checking.
 
@@ -81,13 +83,36 @@ let state = {
 };
 ```
 
-Now, if you just want to update a1? To do that, you need a copy of a and of state (because if you don't copy state itself, you're modifying the state tree it refers to, violating the immutability principal):
+Now, if you just want to update a1 ? To do that, you need a copy of a and of state (because if you don't copy state itself, you're modifying the state tree it refers to, violating the immutability principal):
 
 ```js
-state = { ...state, a: { ...obj.a, a1: "updated a1" } };
+state = { ...state, a: {
+  ...state.a,
+  a1: "updated a1"
+  }
+ };
 ```
+
+#### A general note on combineReducer() function
+
+[Official Doc](https://github.com/reduxjs/redux/blob/master/docs/api/combineReducers.md) As your app grows more complex, you'll want to split your reducing function into separate functions, each managing independent parts of the state. The combineReducers helper function turns an object whose values are different reducing functions into a single reducing function you can pass to createStore. The resulting reducer calls every child reducer, and gathers their results into a single state object. The state produced by combineReducers() namespaces the states of each reducer under their keys as passed to combineReducers()
+
+An example
+
+```js
+import { combineReducers } from 'redux';
+import userSignupReducer from './userSignupReducer';
+import commonEMIOptionsReducer from './commonEMIOptionsReducer';
+
+export default combineReducers({
+  user: userSignupReducer,
+  allEMIOptions: commonEMIOptionsReducer
+});
+```
+
 
 #### Further Reading
 
 - [https://www.freecodecamp.org/news/why-redux-needs-reducers-to-be-pure-functions-d438c58ae468/](https://www.freecodecamp.org/news/why-redux-needs-reducers-to-be-pure-functions-d438c58ae468/)
 - [https://blog.isquaredsoftware.com/2017/05/idiomatic-redux-tao-of-redux-part-1/#summarizing-redux-s-technical-requirements](https://blog.isquaredsoftware.com/2017/05/idiomatic-redux-tao-of-redux-part-1/#summarizing-redux-s-technical-requirements)
+- [https://medium.com/dailyjs/redux-immutable-data-modification-patterns-614ff394da7f](https://medium.com/dailyjs/redux-immutable-data-modification-patterns-614ff394da7f)
