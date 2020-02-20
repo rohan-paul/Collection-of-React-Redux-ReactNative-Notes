@@ -2,26 +2,26 @@
 
 [By React Official documentation](https://reactjs.org/docs/hooks-faq.html#is-there-something-like-instance-variables)
 
-Yes! The useRef() Hook isn’t just for DOM refs. The “ref” object is a generic container whose current property is mutable and can hold any value, similar to an instance property on a class.
+The useRef() Hook isn’t just for DOM refs. The “ref” object is a generic container whose current property is mutable and can hold any value, similar to an instance property on a class.
 
-**useRef** can be used to store and arbitrary value. E.g. you might want to use `useRef` to keep a mutable value for the entire life of the component. You can think of it as useState (in terms of hooks) but it doesn’t trigger a re-render. It’s similar to instance fields (e.g. this.timeoutId) in class components.
+**useRef** can be used to store any arbitrary value. E.g. you might want to use `useRef` to keep a mutable value for the entire life of the component. You can think of it as useState (in terms of hooks) but it doesn’t trigger a re-render. It’s similar to instance fields (e.g. this.timeoutId) in class components.
 
 You can write to it from inside useEffect:
 
 ```js
 function Timer() {
-  const intervalRef = useRef();
+  const intervalRef = useRef()
 
   useEffect(() => {
     const id = setInterval(() => {
       // ...
-    });
-    intervalRef.current = id;
+    })
+    intervalRef.current = id
 
     return () => {
-      clearInterval(intervalRef.current);
-    };
-  });
+      clearInterval(intervalRef.current)
+    }
+  })
 
   // ...
 }
@@ -31,7 +31,7 @@ If we just wanted to set an interval, we wouldn’t need the ref (id could be lo
 
 ```js
 function handleCancelClick() {
-  clearInterval(intervalRef.current);
+  clearInterval(intervalRef.current)
 }
 ```
 
@@ -40,22 +40,22 @@ function handleCancelClick() {
 In react useRef hooks helps us to access the dom nodes or elements so that we can interact with that dom element like accessing the input element value or focussing the input element.
 
 ```js
-import React, { useRef } from "react";
+import React, { useRef } from 'react'
 
 function TextInput() {
   //creating the ref by passing initial value null
-  const nameRef = useRef(null);
+  const nameRef = useRef(null)
 
   function handleFocus() {
     //current is pointing to input element when component is mounts to dom
-    nameRef.current.focus();
+    nameRef.current.focus()
   }
   return (
     <div>
       <input ref={nameRef} placeholder="name" />
       <button onClick={handleFocus}>Focus</button>
     </div>
-  );
+  )
 }
 ```
 
@@ -107,12 +107,12 @@ Refs are used to access DOM or React elements rendered in the render function. A
 ```js
 class MyComponent extends React.Component {
   constructor(props) {
-    super(props);
-    this.myRef = React.createRef();
+    super(props)
+    this.myRef = React.createRef()
   }
 
   render() {
-    return <div ref={this.myRef} />;
+    return <div ref={this.myRef} />
   }
 }
 ```
@@ -124,21 +124,21 @@ And to have access to the current node -
 Now with new hooks api **useRef**
 
 ```js
-import React, { useRef } from "react";
+import React, { useRef } from 'react'
 
 function UnderstandRefHooks() {
   // create refs
-  const inputRef = useRef();
+  const inputRef = useRef()
 
   const handleChange = () => {
-    console.log(inputRef.current);
-  };
+    console.log(inputRef.current)
+  }
 
   return (
     <div>
       <input onChange={handleChange} ref={inputRef} />
     </div>
-  );
+  )
 }
 ```
 
@@ -147,22 +147,22 @@ function UnderstandRefHooks() {
 The useRef hook is pretty powerful and often can be abused. In general, developers should avoid using useRef if they could use useState instead.
 
 ```js
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from 'react'
 
 const GoodCounter = () => {
-  const count = useRef(0);
-  let currentCount = count.current;
+  const count = useRef(0)
+  let currentCount = count.current
 
   useEffect(() => {
-    count.current = currentCount;
-  });
+    count.current = currentCount
+  })
 
-  currentCount += 1;
+  currentCount += 1
 
-  return <div>count:{currentCount}</div>;
-};
+  return <div>count:{currentCount}</div>
+}
 
-export default GoodCounter;
+export default GoodCounter
 ```
 
 This code uses useEffect, whose first argument function is only invoked in the commit phase. The currentCount is a local variable within the render function scope, and it will only change the ref count in the commit phase. The ref is essentially a global variable outside the function scope, hence modifying it is a side effect.

@@ -5,9 +5,11 @@ The key question here is - How can I prevent my functional component from re-ren
 [From Official Docs](https://reactjs.org/docs/react-api.html#reactmemo) React.memo is a higher order component. It’s similar to React.PureComponent but for function components instead of classes.
 
 ```js
-const MyComponent = React.memo(MyComponent = props => {
-  /* render using props */
-});
+const MyComponent = React.memo(
+  (MyComponent = props => {
+    /* render using props */
+  }),
+)
 ```
 
 **If your function component renders the same result given the same props, you can wrap it in a call to React.memo for a performance boost in some cases by memoizing the result. This means that React will skip rendering the component, and reuse the last rendered result. In another word, When a component is wrapped in React.memo(), React renders the component and memoizes the result. Before the next render, if the new props are the same, React reuses the memoized result skipping the next rendering.**
@@ -16,7 +18,7 @@ React.memo only affects props changes. If your function component wrapped in Rea
 
 By default (i.e. when a custom comparison function of areEqual(), in second argument is NOT provided to React.memo() ) it will only shallowly compare complex objects in the props object. If you want control over the comparison, you can also provide a custom comparison function as the second argument.
 
-Unlike the shouldComponentUpdate() method on class components, the areEqual function returns true if the props are equal and false if the props are not equal. This is the inverse from shouldComponentUpdate.
+**Unlike the shouldComponentUpdate() method on class components, the areEqual function in React.memo returns true if the props are equal and this is when the Component will NOT re-render. And it returns false, if the props are not equal. And this is when the Component will re-render**
 
 ```js
 const MyComponent = props => {
@@ -29,20 +31,21 @@ const areEqual = (prevProps, nextProps) => {
   otherwise return false
   */
 }
-export default React.memo(MyComponent, areEqual);
+export default React.memo(MyComponent, areEqual)
 ```
 
 An actual example
 
 ```js
 const areEqual = (prevProps, nextProps) => {
-  return (prevProps.name === nextProps.name)
-};
-React.memo(Person, areEqual);
+  return prevProps.name === nextProps.name
+}
+React.memo(Person, areEqual)
 ```
- By default, memo only does a shallow comparison of props and prop’s objects. You can pass a second argument to indicate a custom equality check, like so
 
- ``React.memo(Component, [areEqual(prevProps, nextProps)]);``
+By default, memo only does a shallow comparison of props and prop’s objects. You can pass a second argument to indicate a custom equality check, like so
+
+`React.memo(Component, [areEqual(prevProps, nextProps)]);`
 
 **This areEqual() functions is a reverser of what shouldComponentUpdate() method does in a class component. That is, render(), componentDidUpdate() will not be invoked if shouldComponentUpdate() returns false. We use shouldComponentUpdate() to let React know if a component’s output is not affected by the current change in state or props. The default behavior is to re-render on every state change, and in the vast majority of cases you should rely on the default behavior.**
 
@@ -59,10 +62,10 @@ export function Movie({ title, releaseDate }) {
       <div>Movie title: {title}</div>
       <div>Release date: {releaseDate}</div>
     </div>
-  );
+  )
 }
 
-export const MemoizedMovie = React.memo(Movie);
+export const MemoizedMovie = React.memo(Movie)
 ```
 
 React.memo(Movie) returns a new memoized component MemoizedMovie. It will output the same content as the original Movie component, but with one difference.
@@ -86,6 +89,6 @@ MemoizedMovie render output is memoized. The memoized content is reused as long 
 
 You gain a performance boost: by reusing the memoized content, React skips rendering the component and doesn’t perform a virtual DOM difference check.
 
-
 ##### Further Reading
-  -1. [https://dmitripavlutin.com/use-react-memo-wisely/](https://dmitripavlutin.com/use-react-memo-wisely/)
+
+-1. [https://dmitripavlutin.com/use-react-memo-wisely/](https://dmitripavlutin.com/use-react-memo-wisely/)

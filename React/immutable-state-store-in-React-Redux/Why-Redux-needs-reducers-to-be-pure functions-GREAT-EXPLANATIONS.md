@@ -54,9 +54,33 @@ Redux's use of shallow equality checking requires immutability if any connected 
 
 ##### How do shallow and deep equality checking differ?
 
-**Shallow equality checking (or reference equality) simply checks that two different variables reference the same object; in contrast, deep equality checking (or value equality) must check every value of two objects' properties.
+Shallow equality checking - When comparing scalar values (numbers, strings) it compares their values. When comparing objects, it does not compare their's attributes - only their references are compared (e.g. "do they point to same object?).
 
-A shallow equality check is therefore as simple (and as fast) as a === b, whereas a deep equality check involves a recursive traversal through the properties of two objects, comparing the value of each property at each step.**
+in contrast, deep equality checking (or value equality) must check every value of two objects' properties.
+
+A shallow equality check is therefore as simple (and as fast) as a === b, whereas a deep equality check involves a recursive traversal through the properties of two objects, comparing the value of each property at each step.
+
+Note the regular triple-equality-check (===) are shalow by design.
+
+And example below
+
+```js
+// Let's consider following shape of user object
+
+user = {
+  name: 'John',
+  surname: 'Doe',
+}
+
+// Now change the state.
+
+const user = this.state.user
+user.name = 'Jane'
+
+console.log(user === this.state.user) // true
+
+// Notice you changed users name. Even with this change objects are equal. They references are exactly same.
+```
 
 It's for this improvement in performance that Redux uses shallow equality checking.
 
@@ -66,31 +90,33 @@ It's for this improvement in performance that Redux uses shallow equality checki
 
 [https://redux.js.org/faq/immutable-data#how-does-redux-use-shallow-equality-checking](https://redux.js.org/faq/immutable-data#how-does-redux-use-shallow-equality-checking)
 
-**"Redux uses shallow equality checking in its combineReducers function to return either a new mutated copy of the root state object, or, if no mutations have been made, the current root state object. combineReducers() function, iterates through each of these key/value pairs. At each stage of the iteration, combineReducers performs a shallow equality check on the current state slice and the state slice returned from the reducer."**
+**"Redux uses shallow equality checking in its combineReducers function to return either a new mutated copy of the root state object, or, if no mutations have been made, the current root state object. combineReducers() function, iterates through each of these key/value pairs. At each stage of the iteration, combineReducer performs a shallow equality check on the current state slice and the state slice returned from the reducer."**
 
 To update state immutability all the way down, a shallow copy at the level you're modifying and all its parent levels is all you need.
 
 ```js
 let state = {
   a: {
-    a1: "a1 initial value",
-    a2: "a2 initial value"
+    a1: 'a1 initial value',
+    a2: 'a2 initial value',
   },
   b: {
-    b1: "b1 initial value",
-    b2: "b2 initial value"
-  }
-};
+    b1: 'b1 initial value',
+    b2: 'b2 initial value',
+  },
+}
 ```
 
 Now, if you just want to update a1 ? To do that, you need a copy of a and of state (because if you don't copy state itself, you're modifying the state tree it refers to, violating the immutability principal):
 
 ```js
-state = { ...state, a: {
-  ...state.a,
-  a1: "updated a1"
-  }
- };
+state = {
+  ...state,
+  a: {
+    ...state.a,
+    a1: 'updated a1',
+  },
+}
 ```
 
 #### A general note on combineReducer() function
@@ -100,16 +126,15 @@ state = { ...state, a: {
 An example
 
 ```js
-import { combineReducers } from 'redux';
-import userSignupReducer from './userSignupReducer';
-import commonEMIOptionsReducer from './commonEMIOptionsReducer';
+import { combineReducers } from 'redux'
+import userSignupReducer from './userSignupReducer'
+import commonEMIOptionsReducer from './commonEMIOptionsReducer'
 
 export default combineReducers({
   user: userSignupReducer,
-  allEMIOptions: commonEMIOptionsReducer
-});
+  allEMIOptions: commonEMIOptionsReducer,
+})
 ```
-
 
 #### Further Reading
 
