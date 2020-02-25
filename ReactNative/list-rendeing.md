@@ -1,1 +1,0 @@
-I was getting performance issues while rendering 5000+ items in flat-list. Looked for other alternatives and found recyclerlistview - High performance list-view for React Native and web. Much better scrollTo performance and better rendering optimisations compared to flat-list.
