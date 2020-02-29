@@ -10,7 +10,7 @@ Move out the renderItem function to the outside of render function, so it won't 
 
 It will define how many items will be rendered for the first time, it could save some resources with lot of data.
 
-### C. Define the key prop on your Item Component
+> ### C. Define the key prop on your Item Component
 
 Simply it will avoid re-render on dynamically added/removed items with defined key on each item. Make sure it is unique, don't use index as the key! You can also using keyExtractor as an alternative.
 
@@ -22,7 +22,7 @@ Win: Setting a bigger number means less visual blank areas when scrolling (a bet
 
 Trade offs: More items per batch means less javascript performance, which means less responsiveness (clicking a item and opening the detail). If you have a static and non-interactive list, this could be the way to go.
 
-### E. Set removeClippedSubviews={true}. You can set the removeClippedSubviews prop to true, which unmount components that are off of the window.
+### E. Set removeClippedSubviews={true}. Because, by setting the removeClippedSubviews prop to true, RN will un-mount components that are off of the window.
 
 Win: This is very memory friendly, as you will always have a little amount of rendered items instead of the whole list.
 
