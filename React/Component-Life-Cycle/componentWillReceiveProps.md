@@ -1,3 +1,7 @@
+First of all, from a blog post in late March 2018, it was announced that the React lifecycle methods **componentWillReceiveProps**, **componentWillMount**, and **componentWillUpdate** will be deprecated in a future version of React. This is because of the eventual migration of React to async rendering; these lifecycle methods will become unreliable when async rendering is made default.
+
+getDerivedStateFromProps is one of those newly introduced lifecycle method replacing componentWillReceiveProps, which has now become UNSAFE_componentWillReceiveProps.
+
 Let's dive into the Update life cycle methods. The first method available to us is componentWillReceiveProps(). This method is called when props are passed to the Component instance.
 
 Our component was doing just fine, when all of a sudden a stream of new props arrive to mess things up.
@@ -11,7 +15,6 @@ componentWillReceiveProps(nextProps) {
     this.contentLoaded = 0
   }
 }
-
 ```
 
 #### We are now in a fun place, where we have access to both the next props (via nextProps), and our current props (via this.props).
@@ -44,3 +47,5 @@ componentWillReceiveProps(nextProps) {
 ```
 
 One more caveat — componentWillReceiveProps is not called on initial render. I mean technically the component is receiving props, but there aren’t any old props to compare to, so… doesn’t count.
+
+Unlike the other methods in the Mounting phase, not all our Update phase methods are called every time. For example, we will skip componentWillReceiveProps() if the Update is triggered by just a state change.
