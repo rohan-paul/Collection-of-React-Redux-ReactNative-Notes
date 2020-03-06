@@ -18,7 +18,7 @@ React.memo only affects props changes. If your function component wrapped in Rea
 
 By default (i.e. when a custom comparison function of areEqual(), in second argument is NOT provided to React.memo() ) it will only shallowly compare complex objects in the props object. If you want control over the comparison, you can also provide a custom comparison function as the second argument.
 
-**Unlike the shouldComponentUpdate() method on class components, the areEqual function in React.memo returns true if the props are equal and this is when the Component will NOT re-render. And it returns false, if the props are not equal. And this is when the Component will re-render**
+**Unlike the shouldComponentUpdate() method on class components, the areEqual function in React.memo returns true if the props are equal and this is when the Component will NOT re-render. And it returns false, if the props are not equal. And this is when the Component WILL re-render**
 
 ```js
 const MyComponent = props => {

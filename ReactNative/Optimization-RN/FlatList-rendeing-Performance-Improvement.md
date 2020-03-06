@@ -18,7 +18,7 @@ Simply it will avoid re-render on dynamically added/removed items with defined k
 
 set the maxToRenderPerBatch={number}, which is a VirtualizedList prop that can be passed directly to FlatList. With this, you can control the amount of items rendered per batch, which is the next chunk of items rendered on every scroll.
 
-Win: Setting a bigger number means less visual blank areas when scrolling (a better the fill rate).
+Win: Setting a bigger number means less visual blank areas when scrolling (a better fill rate).
 
 Trade offs: More items per batch means less javascript performance, which means less responsiveness (clicking a item and opening the detail). If you have a static and non-interactive list, this could be the way to go.
 

@@ -67,3 +67,7 @@ useImperativeHandle customizes the instance value that is exposed to parent comp
 
 **Another example of passing ref further down Parent > Middle > Child want to call a method from Child in Parent**
 [https://stackoverflow.com/questions/57389181/unable-to-call-child-function-from-parent-using-refs-with-functional-component](https://stackoverflow.com/questions/57389181/unable-to-call-child-function-from-parent-using-refs-with-functional-component)
+
+Essentially, useRef is like a “box” that can hold a mutable value in its .current property.
+
+You might be familiar with refs primarily as a way to access the DOM. If you pass a ref object to React with <div ref={myRef} />, React will set its .current property to the corresponding DOM node whenever that node changes.
