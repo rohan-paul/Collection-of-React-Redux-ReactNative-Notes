@@ -1,30 +1,38 @@
-#### How does React implement hooks so that they rely on call order
+#### [How does React implement hooks so that they rely on call order](https://stackoverflow.com/questions/54673188/how-does-react-implement-hooks-so-that-they-rely-on-call-order)
 
-https://reactjs.org/docs/hooks-rules.html#explanation
+**Hooks internally are implemented as a queue with each hook being represented by a node having the reference to the next one.**
 
-Explanation
+From the documentation:
+
+There is an internal list of “memory cells” associated with each component. They’re just JavaScript objects where we can put some data. When you call a Hook like useState(), it reads the current cell (or initializes it during the first render), and then moves the pointer to the next one. This is how multiple useState() calls each get independent local state.
+
+[Offical Docs](https://reactjs.org/docs/hooks-rules.html#explanation)
+
 As we learned earlier, we can use multiple State or Effect Hooks in a single component:
 
+```js
 function Form() {
-// 1. Use the name state variable
-const [name, setName] = useState('Mary');
+  // 1. Use the name state variable
+  const [name, setName] = useState("Mary")
 
-// 2. Use an effect for persisting the form
-useEffect(function persistForm() {
-localStorage.setItem('formData', name);
-});
+  // 2. Use an effect for persisting the form
+  useEffect(function persistForm() {
+    localStorage.setItem("formData", name)
+  })
 
-// 3. Use the surname state variable
-const [surname, setSurname] = useState('Poppins');
+  // 3. Use the surname state variable
+  const [surname, setSurname] = useState("Poppins")
 
-// 4. Use an effect for updating the title
-useEffect(function updateTitle() {
-document.title = name + ' ' + surname;
-});
+  // 4. Use an effect for updating the title
+  useEffect(function updateTitle() {
+    document.title = name + " " + surname
+  })
 
-// ...
+  // ...
 }
-So how does React know which state corresponds to which useState call? The answer is that React relies on the order in which Hooks are called. Our example works because the order of the Hook calls is the same on every render:
+```
+
+So how does React know which state corresponds to which useState call? The answer is that React relies on the order in which Hooks are called. Our example above works because the order of the Hook calls is the same on every render:
 
 As long as the order of the Hook calls is the same between renders, React can associate some local state with each of them. But what happens if we put a Hook call (for example, the persistForm effect) inside a condition?
 
@@ -63,3 +71,7 @@ useEffect(function persistForm() {
 
 [https://overreacted.io/why-do-hooks-rely-on-call-order/](https://overreacted.io/why-do-hooks-rely-on-call-order/)
 [https://medium.com/the-guild/under-the-hood-of-reacts-hooks-system-eb59638c9dba](https://medium.com/the-guild/under-the-hood-of-reacts-hooks-system-eb59638c9dba)
+
+[https://stackoverflow.com/questions/54673188/how-does-react-implement-hooks-so-that-they-rely-on-call-order](https://stackoverflow.com/questions/54673188/how-does-react-implement-hooks-so-that-they-rely-on-call-order)
+
+[React Hooks Source Code](https://github.com/facebook/react/blob/5f06576f51ece88d846d01abd2ddd575827c6127/packages/react-reconciler/src/ReactFiberHooks.js#L243)
