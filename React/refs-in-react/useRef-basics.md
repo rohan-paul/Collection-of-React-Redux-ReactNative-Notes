@@ -1,3 +1,8 @@
+### What is ref
+
+#### Sometimes when using React.js you’ll need an escape hatch to write imperative-style code to interact directly with DOM elements. Using React’s createRef (for class component) and useRef(for Hooks based component) method allows you to do just that! refs are used to get reference to a DOM node or an instance of a component in a React Application i.e. refs would return the node we are referencing . All standard HTML elements in React have a reserved prop called ref (much like style which is a reserved prop).
+
+
 #### What is useRef()
 
 [By React Official documentation](https://reactjs.org/docs/hooks-faq.html#is-there-something-like-instance-variables)
@@ -6,7 +11,7 @@ The useRef() Hook isn’t just for DOM refs. The “ref” object is a generic c
 
 **useRef** can be used to store and arbitrary value. E.g. you might want to use `useRef` to keep a mutable value for the entire life of the component. You can think of it as useState (in terms of hooks) but it doesn’t trigger a re-render. It’s similar to instance fields (e.g. this.timeoutId) in class components.
 
-If we just wanted to set an interval, we wouldn’t need the ref (id could be local to the effect) and I can write and clear the id from inside useEffect - like in below case
+If we just wanted to set an interval, we wouldn’t need the ref (id could be local to the effect) and I can write and clear the id from inside useEffect - like in below code
 
 ```js
 function Timer() {

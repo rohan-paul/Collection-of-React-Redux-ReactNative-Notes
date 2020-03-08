@@ -8,7 +8,9 @@ We recommend using the exhaustive-deps rule as part of our eslint-plugin-react-h
 
 ### Is it safe to omit functions from the list of dependencies?
 
-Generally speaking, no.
+**Generally speaking, NO.**
+
+## It’s difficult to remember which props or state are used by functions outside of the effect. This is why usually you’ll want to declare functions needed by an effect inside of it. Then it’s easy to see what values from the component scope that effect depends on:
 
 ```js
 function Example({ someProp }) {
@@ -21,8 +23,6 @@ function Example({ someProp }) {
   }, []) // 🔴 This is not safe (it calls `doSomething` which uses `someProp`)
 }
 ```
-
-It’s difficult to remember which props or state are used by functions outside of the effect. This is why usually you’ll want to declare functions needed by an effect inside of it. Then it’s easy to see what values from the component scope that effect depends on:
 
 ```js
 function Example({ someProp }) {
