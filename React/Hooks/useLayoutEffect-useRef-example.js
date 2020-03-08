@@ -41,7 +41,7 @@ export default function TheShape(props) {
 
 will ONLY show the {height} with useLayoutEffect() and NOT with useEffect()
 
-The HTMLElement.offsetHeight read-only property returns the height of an element, including vertical padding and borders, as an integer.
+2. The HTMLElement.offsetHeight read-only property returns the height of an element, including vertical padding and borders, as an integer.
 
 Typically, offsetHeight is a measurement in pixels of the element's CSS height, including any borders, padding, and horizontal scrollbars (if rendered). It does not include the height of pseudo-elements such as ::before or ::after.
 */

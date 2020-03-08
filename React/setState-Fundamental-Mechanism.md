@@ -21,9 +21,9 @@ Asynchronous meaning it returns before actually setting the state. As such, itâ€
 ```js
 class SomeForm extends React.Component {
   handleFirstNameChange = event => {
-    this.setState({ firstName: event.currentTarget.value });
-    console.log(this.state.firstName);
-  };
+    this.setState({ firstName: event.currentTarget.value })
+    console.log(this.state.firstName)
+  }
 
   render() {
     return (
@@ -33,7 +33,7 @@ class SomeForm extends React.Component {
           value={this.state.firstName}
         />
       </div>
-    );
+    )
   }
 }
 ```
@@ -49,3 +49,15 @@ handleFirstNameChange = (event) => {
   });
 }
 ```
+
+## Why is setState in reactjs Async instead of Sync?
+
+setState actions are asynchronous and are batched for performance gains. This is explained in the documentation of setState.
+
+setState() does not immediately mutate this.state but creates a pending state transition. Accessing this.state after calling this method can potentially return the existing value. There is no guarantee of synchronous operation of calls to setState and calls may be batched for performance gains.
+
+2. Why would they make setState async as JS is a single threaded language and this setState is not a WebAPI or server call?
+
+This is because setState alters the state and causes rerendering. This can be an expensive operation and making it synchronous might leave the browser unresponsive.
+
+Thus the setState calls are asynchronous as well as batched for better UI experience and performance.
