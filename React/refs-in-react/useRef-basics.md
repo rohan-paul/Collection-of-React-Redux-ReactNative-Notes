@@ -2,6 +2,7 @@
 
 #### Sometimes when using React.js you’ll need an escape hatch to write imperative-style code to interact directly with DOM elements. Using React’s createRef (for class component) and useRef(for Hooks based component) method allows you to do just that! refs are used to get reference to a DOM node or an instance of a component in a React Application i.e. refs would return the node we are referencing . All standard HTML elements in React have a reserved prop called ref (much like style which is a reserved prop).
 
+### refs primarily are used as a way to access the DOM. If you pass a ref object to React with <div ref={myRef} />, React will set its .current property to the corresponding DOM node whenever that node changes.
 
 #### What is useRef()
 
@@ -9,19 +10,16 @@
 
 The useRef() Hook isn’t just for DOM refs. The “ref” object is a generic container whose current property is mutable and can hold any value, similar to an instance property on a class.
 
-**useRef** can be used to store and arbitrary value. E.g. you might want to use `useRef` to keep a mutable value for the entire life of the component. You can think of it as useState (in terms of hooks) but it doesn’t trigger a re-render. It’s similar to instance fields (e.g. this.timeoutId) in class components.
+**useRef** can be used to store an arbitrary value. E.g. you might want to use `useRef` to keep a mutable value for the entire life of the component. You can think of it as useState (in terms of hooks) but it doesn’t trigger a re-render. It’s similar to instance fields (e.g. this.timeoutId) in class components.
 
 If we just wanted to set an interval, we wouldn’t need the ref (id could be local to the effect) and I can write and clear the id from inside useEffect - like in below code
 
 ```js
 function Timer() {
-  const intervalRef = useRef()
-
   useEffect(() => {
     const id = setInterval(() => {
       setCounter(prev => prev + 1)
     }, 1000)
-    intervalRef.current = id
 
     return () => {
       clearInterval(id)
