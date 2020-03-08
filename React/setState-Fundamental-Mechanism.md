@@ -61,3 +61,47 @@ setState() does not immediately mutate this.state but creates a pending state tr
 This is because setState alters the state and causes rerendering. This can be an expensive operation and making it synchronous might leave the browser unresponsive.
 
 Thus the setState calls are asynchronous as well as batched for better UI experience and performance.
+
+[For a Great explanation by Dan why setState is asynchronous](https://github.com/facebook/react/issues/11527#issuecomment-360199710)
+
+First, I think we agree that delaying reconciliation in order to batch updates is beneficial. That is, we agree that setState() re-rendering synchronously would be inefficient in many cases, and it is better to batch updates if we know we’ll likely get several ones.
+
+For example, if we’re inside a browser click handler, and both Child and Parent call setState, we don’t want to re-render the Child twice, and instead prefer to mark them as dirty, and re-render them together before exiting the browser event.
+
+You’re asking: why can’t we do the same exact thing (batching) but write setState updates immediately to this.state without waiting for the end of reconciliation. I don’t think there’s one obvious answer (either solution has tradeoffs) but here’s a few reasons that I can think of.
+
+Guaranteeing Internal Consistency
+Even if state is updated synchronously, props are not. (You can’t know props until you re-render the parent component, and if you do this synchronously, batching goes out of the window.)
+
+Right now the objects provided by React (state, props, refs) are internally consistent with each other. This means that if you only use those objects, they are guaranteed to refer to a fully reconciled tree (even if it’s an older version of that tree). Why does this matter?
+
+When you use just the state, if it flushed synchronously (as you proposed), this pattern would work:
+
+```js
+console.log(this.state.value) // 0
+this.setState({ value: this.state.value + 1 })
+console.log(this.state.value) // 1
+this.setState({ value: this.state.value + 1 })
+console.log(this.state.value) // 2
+```
+
+However, say this state needs to be lifted to be shared across a few components so you move it to a parent:
+
+```js
+;-this.setState({ value: this.state.value + 1 })
+;+this.props.onIncrement() // Does the same thing in a parent
+```
+
+I want to highlight that in typical React apps that rely on setState() this is the single most common kind of React-specific refactoring that you would do on a daily basis.
+
+However, this breaks our code!
+
+```js
+console.log(this.props.value) // 0
+this.props.onIncrement()
+console.log(this.props.value) // 0
+this.props.onIncrement()
+console.log(this.props.value) // 0
+```
+
+This is because, in the model you proposed, this.state would be flushed immediately but this.props wouldn’t. And we can’t immediately flush this.props without re-rendering the parent, which means we would have to give up on batching (which, depending on the case, can degrade the performance very significantly).
