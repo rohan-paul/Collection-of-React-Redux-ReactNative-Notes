@@ -12,8 +12,7 @@ So the provider component puts the data into context, and the connect Higher Ord
 
 Most apps need a way to unobtrusively display notifications to users as they happen. Suppose you’re running a 20% off sale and you’d like to let your users know as soon as they sign in, or maybe after they submit feedback you want to display a thank you message.
 
-Material UI provides a snackbar component which is great for these types of messages, so I’ll be using that for this example. That being said, this article is much more about the Context API than Material UI, and swapping out Material UI for any other component library would be very simple with this approach.
-
+Material UI provides a snackbar component which is great for these types of messages, so I’ll be using that for this example.
 Many apps need to trigger messages from dozens of different components. The React Context API makes it dead simple to provide all components access to a shared snackbar so they can trigger these messages without needing to implement separate components for each message.
 
 ### [How Do I Use Context?](https://hackernoon.com/how-do-i-use-react-context-3eeb879169a2)
@@ -24,40 +23,42 @@ Prop Drilling
 I’ve built an application that stores a family’s last name in a <Grandmother /> component. The <Child /> component than displays the last name.
 
 ```js
-const App = () => <Grandmother />;
+const App = () => <Grandmother />
 
 class Grandmother extends React.Component {
   state = {
-    lastName: "Sanchez"
-  };
+    lastName: "Sanchez",
+  }
 
   render() {
-    return <Mother lastName={this.state.lastName} />;
+    return <Mother lastName={this.state.lastName} />
   }
 }
 
 const Mother = ({ lastName }) => {
-  return <Child lastName={lastName} />;
-};
+  return <Child lastName={lastName} />
+}
 
 const Child = ({ lastName }) => {
-  return <p>{lastName}</p>;
-};
+  return <p>{lastName}</p>
+}
 ```
 
 ### Context
 
 We can refactor this example to use Context instead. Using Context means we don’t need to pass the lastName through the <Mother /> component. We circumvent components that don’t need to know the lastName property, and share that state only with components that need to know it.
 
-First, we will need to create our Context in a seperate file, say **FamilyContext.js**
+First, we will need to create our Context in a separate file, say **FamilyContext.js**
+
+**./FamilyContext.js file**
 
 ```js
-import React from "react";
+import React from "react"
 
-const FamilyContext = React.createContext({});
+const FamilyContext = React.createContext({})
 
-export const FamilyProvider = FamilyContext.Provider;
-export const FamilyConsumer = FamilyContext.Consumer;
+export const FamilyProvider = FamilyContext.Provider
+export const FamilyConsumer = FamilyContext.Consumer
 ```
 
 We use`createContext()` and pass it an empty object as the default value:
@@ -67,20 +68,20 @@ We use`createContext()` and pass it an empty object as the default value:
 We then create a Provider and a Consumer component and export them so they are available for consumption by other components in your application.
 
 ```js
-export const FamilyProvider = FamilyContext.Provider;
-export const FamilyConsumer = FamilyContext.Consumer;
+export const FamilyProvider = FamilyContext.Provider
+export const FamilyConsumer = FamilyContext.Consumer
 ```
 
 Here’s the final and full code of how we will use the Provider and Consumer in the Grandmother.js file
 
 ```js
-import React from "react";
-import { FamilyProvider, FamilyConsumer } from "./FamilyContext";
+import React from "react"
+import { FamilyProvider, FamilyConsumer } from "./FamilyContext"
 
 export class Grandmother extends React.Component {
   state = {
-    lastName: "Sanchez"
-  };
+    lastName: "Sanchez",
+  }
 
   render() {
     return (
@@ -89,19 +90,19 @@ export class Grandmother extends React.Component {
       <FamilyProvider value={this.state.lastName}>
         <Mother />
       </FamilyProvider>
-    );
+    )
   }
 }
 
 const Mother = () => {
-  return <Child />;
-};
+  return <Child />
+}
 
 const Child = () => {
-  // We wrap the component that actaully needs access to
+  // We wrap the component that actually needs access to
   // the lastName property in FamilyConsumer
-  return <FamilyConsumer>{context => <p>{context}</p>}</FamilyConsumer>;
-};
+  return <FamilyConsumer>{context => <p>{context}</p>}</FamilyConsumer>
+}
 ```
 
 Now, we have wrapped the <Mother /> component with <FamilyProvider /> because it contains <Child /> which is the component that needs access to the lastName prop.
@@ -136,8 +137,8 @@ const Child = () => {
       argument
       {context => <p>{context}</p>}
     </FamilyConsumer>
-  );
-};
+  )
+}
 ```
 
 <FamilyConsumer /> uses a render prop to expose the context object to its children (in this case a <p /> tag but it could be anything).

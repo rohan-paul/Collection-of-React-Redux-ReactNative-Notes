@@ -1,6 +1,11 @@
 #### [How does React implement hooks so that they rely on call order](https://stackoverflow.com/questions/54673188/how-does-react-implement-hooks-so-that-they-rely-on-call-order)
 
-**Hooks internally are implemented as a queue with each hook being represented by a node having the reference to the next one.**
+**Behind the scenes, Hooks are represented as nodes which are linked together in their calling order. They internally are implemented as a queue with each hook being represented by a node having the reference to the next one.**
+
+The schema of a single hook node can be viewed in the [implementation](https://github.com/facebook/react/blob/5f06576f51ece88d846d01abd2ddd575827c6127/packages/react-reconciler/src/ReactFiberHooks.js#L243). You’ll see that the hook has some additional properties, but the key for understanding how hooks work lies within memoizedState and next. The rest of the properties are used specifically by the useReducer() hook to cache dispatched actions and base states so the reduction process can be repeated as a fallback in various cases:
+baseState - The state object that would be given to the reducer.
+baseUpdate - The most recent dispatched action that created the baseState.
+queue - A queue of dispatched actions, waiting to go through the reducer.
 
 From the documentation:
 

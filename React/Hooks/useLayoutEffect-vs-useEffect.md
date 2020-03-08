@@ -1,3 +1,7 @@
+#### First note this basic property of useEffect()
+
+Unlike componentDidMount or componentDidUpdate, effects scheduled with useEffect don’t block the browser from updating the screen. This makes your app feel more responsive. The majority of effects don’t need to happen synchronously. In the uncommon cases where they do (such as measuring the layout), there is a separate useLayoutEffect Hook with an API identical to useEffect.
+
 ### useEffect vs useLayoutEffect
 
 #### The Difference Between useEffect and useLayoutEffect

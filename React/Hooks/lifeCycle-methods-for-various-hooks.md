@@ -4,6 +4,20 @@ constructor: Function components don’t need a constructor. You can initialize 
 
 **getDerivedStateFromProps**: Schedule an update while rendering instead.
 
+The react hook equivalent to the old **componentWillReceiveprops / getDerivedStateFromProps** can be done using the **useEffect** hook, just specifying the prop that we want to listen for changes, in the dependency array.
+
+Something like:
+
+```js
+export default props => {
+  useEffect(() => {
+    console.log("counter updated")
+  }, [props.counter])
+
+  return <div>Hi {props.counter}</div>
+}
+```
+
 **shouldComponentUpdate**: See React.memo.
 
 **render**: This is the function component body itself.

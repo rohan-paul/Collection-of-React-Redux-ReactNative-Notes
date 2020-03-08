@@ -1,10 +1,10 @@
 First of all, from a blog post in late March 2018, it was announced that the React lifecycle methods **componentWillReceiveProps**, **componentWillMount**, and **componentWillUpdate** will be deprecated in a future version of React. This is because of the eventual migration of React to async rendering; these lifecycle methods will become unreliable when async rendering is made default.
 
-getDerivedStateFromProps is one of those newly introduced lifecycle method replacing componentWillReceiveProps, which has now become UNSAFE_componentWillReceiveProps.
+**getDerivedStateFromProps** is one of those newly introduced lifecycle method replacing componentWillReceiveProps, which has now become UNSAFE_componentWillReceiveProps.
 
 In place of these methods, the new static method **getDerivedStateFromProps** was introduced.
 
-**getDerivedStateFromProps** is invoked every time a component is rendered. It takes in two arguments: the next props object (which may be the same as the previous object) and the previous state object of the component in question. When implementing this method, we need to return the changes to our component state or null (or {}) if no changes need to be made.
+#### getDerivedStateFromProps is invoked every time a component is rendered. Remember, this method is called (or invoked) before the component is rendered to the DOM on initial mount. It takes in two arguments: the next props object (which may be the same as the previous object) and the previous state object of the component in question. When implementing this method, we need to return the changes to our component state or null (or {}) if no changes need to be made.
 
 ### Need to keep in mind that the new method is static, and therefore does not have access to the this context that the old lifecycle methods provided.
 
@@ -17,8 +17,6 @@ static getDerivedStateFromProps(props, state) {
     }
 }
 ```
-
-### Remember, this method is called (or invoked) before the component is rendered to the DOM on initial mount.
 
 Below’s a quick example:
 
@@ -58,7 +56,7 @@ class App extends Component {
   // *******
   //  NB: Not the recommended way to use this method. Just an example. Unconditionally overriding state here is generally considered a bad idea
   // ********
-  static getDerivedStateFromProps(props, state) {
+  static getDerivedStateFromProps(nextProps, prevState) {
     return {
       points: 1000,
     }
