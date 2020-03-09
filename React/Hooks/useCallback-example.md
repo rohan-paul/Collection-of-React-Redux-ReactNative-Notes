@@ -78,6 +78,39 @@ const ChildComponent = ({ action }) => {
 
 ### you should not use ‘useCallback’ and ‘useMemo’ for everything. ‘useMemo’ should be used for big data processing while ‘useCallback’ is a way to add more dependency to your code to avoid useless rendering.
 
+### On the cost / performance-disadvantage of using useMemo() or useCallback()
+
+Performance optimizations are not free. They ALWAYS come with a cost but do NOT always come with a benefit to offset that cost.
+
+Take a look at the below callback function that will be passed from the Parent to the Child
+
+Here's the original again:
+
+```js
+const dispense = candy => {
+  setCandies(allCandies => allCandies.filter(c => c !== candy))
+}
+```
+
+And here's the version with useCallback
+
+```js
+const dispense = candy => {
+  setCandies(allCandies => allCandies.filter(c => c !== candy))
+}
+const dispenseCallback = React.useCallback(dispense, [])
+```
+
+Yeah, they're exactly the same except the useCallback version is doing more work. Not only do we have to define the function, but we also have to define an array ([]) and call the React.useCallback which itself is setting properties/running through logical expressions etc.
+
+So in both cases JavaScript must allocate memory for the function definition on every render and depending on how useCallback is implemented, you may get more allocation for function definitions
+
+I'd like to mention also that on the second render of the component, the original dispense function gets garbage collected (freeing up memory space) and then a new one is created. However with useCallback the original dispense function wont get garbage collected and a new one is created, so you're worse-off from a memory perspective as well.
+
+As a related note, if you have dependencies then it's quite possible React is hanging on to a reference to previous functions because memoization typically means that we keep copies of old values to return in the event we get the same dependencies as given previously. The especially astute of you will notice that this means React also has to hang on to a reference to the dependencies for this equality check (which incidentally is probably happening anyway thanks to your closure, but it's something worth mentioning anyway).
+
 #### Further Reading
 
 [https://blog.hackages.io/react-hooks-usecallback-and-usememo-8d5bb2b67231](https://blog.hackages.io/react-hooks-usecallback-and-usememo-8d5bb2b67231)
+
+[https://kentcdodds.com/blog/usememo-and-usecallback](https://kentcdodds.com/blog/usememo-and-usecallback)
