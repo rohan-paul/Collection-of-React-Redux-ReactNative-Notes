@@ -1,4 +1,28 @@
-shouldComponentUpdate() has been replaced with React memo. React.memo() is similar to PureComponent in that it will help us control when our components rerender.
+### First some fundamentals of JS before using Memo or useMemo()
+
+You may remember how Javascript compares objects 🥴. There are some tricky results when we run equality comparisons:
+
+```js
+{} === {} // false
+
+const z = {}
+z === z // true
+
+```
+
+React uses Object.is to compare components, but that gives very similar results to using ===. So, when React checks for any changes in a component, it may find a “change” that we wouldn’t really consider a change.
+
+```js
+() => {} === () => {} // false
+[] === [] // false
+
+```
+
+#### Why Memo or useMemo() required at all
+
+This comparison check will cause some React re-rendering we didn’t intend or expect. If that re-rendering is some expensive operation, that can hurt performance. If one part re-renders, it re-render the entire component tree. Thus, React released the memo idea to fix this.
+
+### shouldComponentUpdate() has been replaced with React memo. React.memo() is similar to PureComponent in that it will help us control when our components rerender.
 
 The key question here is - How can I prevent my functional component from re-rendering with React memo or React hooks?
 
