@@ -1,6 +1,8 @@
+#### shouldComponentUpdate() is invoked before rendering when new props or state are being received. Defaults to true. This method is not called for the initial render or when forceUpdate() is used.
+
 ## What does shouldComponentUpdate do and why is it important?
 
-Above we talked about reconciliation and what React does when setState is called. What shouldComponentUpdate does is it’s a lifecycle method that allows us to opt out of this reconciliation process for certain components (and their child components). Why would we ever want to do this? As mentioned above, “The end goal of reconciliation is to, in the most efficient way possible, update the UI based on new state”. If we know that a certain section of our UI isn’t going to change, there’s no reason to have React go through the trouble of trying to figure out if it should. By returning false from shouldComponentUpdate, React will assume that the current component, and all its child components, will stay the same as they currently are.
+What shouldComponentUpdate does is it’s a lifecycle method that allows us to opt out of this reconciliation process for certain components (and their child components). Why would we ever want to do this? As mentioned above, “The end goal of reconciliation is to, in the most efficient way possible, update the UI based on new state”. If we know that a certain section of our UI isn’t going to change, there’s no reason to have React go through the trouble of trying to figure out if it should. By returning false from shouldComponentUpdate, React will assume that the current component, and all its child components, will stay the same as they currently are.
 
 ## How shouldComponentUpdate boost performance
 
@@ -16,3 +18,11 @@ ReactJS uses following steps to find the difference in both the Virtual DOM’s
 
 ### Re-render all the children if parent state has changed. If the state of a component has changed, then ReactJS re-renders all the child components even if child components are not modified. To prevent the unwanted re-render of the child components we can use shouldComponentUpdate() component life cycle method. This will further help in boosting the performance.
 
+```js
+shouldComponentUpdate(nextProps, nextState){
+   return nextProps !== this.props
+}
+
+```
+
+React Official guide recommends NOT to do deep equality checks or using JSON.stringify() in shouldComponentUpdate(). It is very inefficient and will harm performance.

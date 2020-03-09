@@ -69,8 +69,7 @@ export const MemoizedMovie = React.memo(Movie)
 ```
 
 React.memo(Movie) returns a new memoized component MemoizedMovie. It will output the same content as the original Movie component, but with one difference.
-
-MemoizedMovie render output is memoized. The memoized content is reused as long as title or releaseDate props are the same on next renderings.
+MemoizedMovie render output is memoized. **The memoized content is reused as long as title or releaseDate props are the same on next renderings.**
 
 ```js
 // First render. React calls MemoizedMovie function.
