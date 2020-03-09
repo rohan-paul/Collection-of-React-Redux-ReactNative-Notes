@@ -42,11 +42,30 @@ This is not the same as being equal according to the == operator. The == operato
 
 This is also not the same as being equal according to the === operator. The === operator (and the == operator as well) treats the number values -0 and +0 as equal and treats Number.NaN as not equal to NaN.
 
-### useMemo() - Example-1
+### Now note the syntax is just the same for all the below 3 Hooks
+
+```js
+useCallback(
+  doSomething()
+}, [dependencies])
+
+useMemo(() => {
+  doSomething()
+}, [dependencies])
+
+useEffect(() => {
+  doSomething()
+}, [dependencies])
+
+```
+
+### Some basics on useMemo()
 
 Remember that the function passed to useMemo runs during rendering. Don’t do anything there that you wouldn’t normally do while rendering. For example, side effects belong in useEffect, not useMemo.
 
-useMemo Example
+**useCallback vs useMemo** - The main difference between the two is that ‘useCallback’ returns a memoized callback and ‘useMemo’ returns a memoized value that is the result of the function parameter.
+
+### useMemo() - Example-1 - Some reandom expensive function
 
 ```js
 const List = useMemo(
@@ -64,7 +83,7 @@ In the above example, the useMemo function would run on the first render. It wou
 
 ### However, the expensive functions would never fire off again if listOfItems never changed and we would still get the return value from them. It would make these expensive functions seem instantaneous. This is ideal of you have an expensive, synchronous function or two.
 
-### useMemo() - Example-1
+### useMemo() - Example-2 - Filtering Large Arrays
 
 ```js
 const MyList(list, query) {
@@ -78,3 +97,17 @@ const MyList(list, query) {
   )
 }
 ```
+
+### useMemo() - Example-3 - Recursive functions, like Fibonacci
+
+```js
+const MySequence = number => {
+  // Will re-calculate ONLY when 'number' changes
+  const memoizedSequence = React.useMemo((() => getFibonacci(number),   [number])
+}
+
+```
+
+#### Further Reading
+
+[https://blog.hackages.io/react-hooks-usecallback-and-usememo-8d5bb2b67231](https://blog.hackages.io/react-hooks-usecallback-and-usememo-8d5bb2b67231)
