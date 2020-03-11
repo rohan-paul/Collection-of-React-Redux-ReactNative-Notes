@@ -30,6 +30,14 @@ This issue can be avoided by uncoupling your application logic from your data st
 
 Because you must access your data via Immutable.JS’s own get() and getIn() methods, you can no longer use JavaScript’s destructuring operator (or the Object spread operator), making your code more verbose.
 
+### Difficult to interoperate with other Libs and plain JS
+
+For example, you will no longer be able to reference an object’s properties through standard JavaScript dot or bracket notation. Instead, you must reference them via Immutable.JS’s get() or getIn() methods, which use an awkward syntax that accesses properties via an array of strings, each of which represents a property key.
+
+For example, instead of myObj.prop1.prop2.prop3, you would use myImmutableMap.getIn([‘prop1’, ‘prop2’, ‘prop3’]).
+
+This makes it awkward to interoperate not just with your own code, but also with other libraries, such as lodash or ramda, that expect plain JavaScript objects.
+
 #### Further Reading
 
 [https://redux.js.org/recipes/using-immutablejs-with-redux/](https://redux.js.org/recipes/using-immutablejs-with-redux/)

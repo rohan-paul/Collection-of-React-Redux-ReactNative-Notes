@@ -67,5 +67,40 @@ Instead of doing that, we should think about what would be the best schema for u
 
 ```
 
+And the below code will output exactly what what I want my final data-signature to be
+
+```js
+import { normalize, schema } from "normalizr"
+
+const tag = new schema.Entity("tags", {})
+const article = new schema.Entity("articles", {
+  tags: [tag],
+})
+
+// We assume articlesData is the (parsed) JSON object that we got
+const normalizedData = normalize(articlesData, { articles: [article] })
+
+console.log("normalizr data is ", normalizedData)
+```
+
+Output
+
+```js
+{
+  articles: {
+    1: { title: "Dagon", tags: [1, 2] },
+    2: { title: "Azathoth", tags: [1, 3] },
+    3: { title: "At the Mountains of Madness", tags: [3, 4] }
+  },
+  tags: {
+    1: "old ones",
+    2: "short story",
+    3: "novel",
+    4: "insanity"
+  }
+}
+
+```
+
 [normalizing-state-shape/](https://redux.js.org/recipes/structuring-reducers/normalizing-state-shape/)
 [advanced-redux-patterns-normalisation](https://blog.brainsandbeards.com/advanced-redux-patterns-normalisation-6b9a5aa46e1f)
