@@ -1,3 +1,12 @@
+#### Most Important points on setState
+
+- setState() is Asynchronous
+- setState() Can Have a Function as A Parameter Instead of An Object
+- setState() Can Have a Callback Function
+- setState() will always lead to a re-render unless shouldComponentUpdate() returns false
+- setState is asynchronous function and just like any asynchronous function is being passed on to the event loop, setState also is passed on to the event loop and any code after it will execute seemlessly.
+- In case multiple setState() calls are made, React may batch the state updates while respecting the order of updates.
+
 ## What happens when you call setState?
 
 The first thing React will do when setState is called is merge the object you passed into setState into the current state of the component. This will kick off a process called reconciliation. The end goal of reconciliation is to, in the most efficient way possible, update the UI based on this new state. To do this, React will construct a new tree of React elements (which you can think of as an object representation of your UI). Once it has this tree, in order to figure out how the UI should change in response to the new state, React will diff this new tree against the previous element tree. By doing this, React will then know the exact changes which occurred, and by knowing exactly what changes occurred, will able to minimize its footprint on the UI by only making updates where absolutely necessary.
