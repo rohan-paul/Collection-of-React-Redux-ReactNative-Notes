@@ -1,10 +1,9 @@
 #### Most Important points on setState
 
-- setState() is Asynchronous
+- setState is asynchronous function and just like any asynchronous function is being passed on to the event loop, while any code after it will execute seemlessly in the main thread.
 - setState() Can Have a Function as A Parameter Instead of An Object
 - setState() Can Have a Callback Function
 - setState() will always lead to a re-render unless shouldComponentUpdate() returns false
-- setState is asynchronous function and just like any asynchronous function is being passed on to the event loop, setState also is passed on to the event loop and any code after it will execute seemlessly.
 - In case multiple setState() calls are made, React may batch the state updates while respecting the order of updates.
 
 ## What happens when you call setState?
