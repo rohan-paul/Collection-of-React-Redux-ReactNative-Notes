@@ -192,5 +192,9 @@ By Dan himself - **useRef() is basically useState({current: initialValue })[0]**
 #### Further Reading
 
 - 1.  [https://reactjs.org/docs/hooks-reference.html#useref](https://reactjs.org/docs/hooks-reference.html#useref)
+
 - 2. [https://medium.com/@dai_shi/how-to-properly-use-the-react-useref-hook-in-concurrent-mode-38c54543857b](https://medium.com/@dai_shi/how-to-properly-use-the-react-useref-hook-in-concurrent-mode-38c54543857b)
+
 - 3. [https://reactgo.com/react-useref-hook-example/](https://reactgo.com/react-useref-hook-example/)
+
+- [The useRef implementation in the React codebase](https://github.com/facebook/react/blob/8482cbe22d1a421b73db602e1f470c632b09f693/packages/react-reconciler/src/ReactFiberHooks.js#L500-L515)
