@@ -11,3 +11,25 @@ export const getItems = createSelector(
   items => Object.keys(items),
 )
 ```
+
+### Selectors created using Reselect’s createSelector function are memoized. That’s a fancy word to mean that the function remembers the arguments passed-in the last time it was invoked and doesn’t recalculate if the arguments are the same. You can view it a little bit like caching.
+
+**The createSelector accepts an arbitrary number of function arguments, where the first N-1 functions are “inputs” to the selector and the Nth one is the “output”. It guarantees that as long as the inputs have the same value, the output will be “cached” and re-used. If any of the inputs has a different value compared to the value it had during the last selector invocation, then the “output” from the Nth function will be re-computed. In our example, as long as the items remain the same, then the getItems selector will return a value with the same reference, no matter how many times it’s called. If new items are added, then the items state won’t have the same value anymore, so the getItems will return a new reference which will be cached and re-used.**
+
+Reselect selectors can be composed/chained together easily. This way, each selector stays small and focused on one task.
+
+Another small example below
+
+```js
+import { createSelector } from "reselect"
+
+const todoSelector = state => state.todo.todo
+
+export const todosWithMilk = createSelector([todoSelector], todos => {
+  return todos.filter(todo => todo.title.toLowerCase().includes("milk"))
+})
+
+export const todosWithMilkAndBread = createSelector([todosWithMilk], todos => {
+  return todos.filter(todo => todo.title.toLowerCase().includes("bread"))
+})
+```
