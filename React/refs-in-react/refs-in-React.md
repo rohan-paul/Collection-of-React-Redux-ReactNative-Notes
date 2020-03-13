@@ -138,7 +138,7 @@ The short answer is that most of the time you can safely use the createRef API. 
 - When in a class component, use createRef in all other cases
 - When in a function component, use useRef in all other cases
 - Use forwardRef when you need access to a child ref
-- React.forwardRef receives a function that gets called with the props and the ref your component received. It returns what your component would normally return. There, you can attach that ref to the specific DOM Element you want.
+- forwardRef receives a function that gets called with the props and the ref your component received. It returns what your component would normally return. There, you can attach that ref to the specific DOM Element you want.
 - If the child ref must not be a function component, then use a custom method to trigger focus programmatically from the parent (remember you will get a component instance, not a DOM element)
 
 #### Further Reading
