@@ -16,6 +16,7 @@ We will use the underscore library to throttle our autocomp component. Underscor
 
 ```js
 import * as _ from underscore;
+
 class Autocomp extends React.Component {
     constructor(props) {
         super(props);

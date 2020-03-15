@@ -16,8 +16,18 @@ categories: {
 Notice how the id is both the key for the row, and a property in the row itself. This little bit of duplication affords us great flexibility at access time. It’s also compatible with the normalized (aka flat) shape that the redux docs recommend.
 */
 
-const normalizeArr = arr => {
-  return arr.reduce((obj, item) => Object.assign(obj, { [item.id]: item }), {})
+// const normalizeArr = arr => {
+//   return arr.reduce((obj, item) => Object.assign(obj, { [item.id]: item }), {})
+// }
+
+// Alt-2
+
+const normalize = arr => {
+  let result = {}
+  arr.map(item => {
+    result[item.id] = item
+  })
+  return result
 }
 
 console.log(normalizeArr(categories))
