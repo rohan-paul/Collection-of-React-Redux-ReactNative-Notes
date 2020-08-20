@@ -54,9 +54,9 @@ Redux's use of shallow equality checking requires immutability if any connected 
 
 ##### How do shallow and deep equality checking differ?
 
-Shallow equality checking - When comparing scalar values (numbers, strings) it compares their values. When comparing objects, it does not compare their's attributes - only their references are compared (e.g. "do they point to same object?).
+#### Shallow equality checking - When comparing scalar values (numbers, strings) it compares their values. When comparing objects, it does NOT compare their attributes - only their references are compared (e.g. "do they point to same object?).
 
-in contrast, deep equality checking (or value equality) must check every value of two objects' properties.
+#### In contrast, deep equality checking (or value equality) must check every value of two objects' properties.
 
 A shallow equality check is therefore as simple (and as fast) as a === b, whereas a deep equality check involves a recursive traversal through the properties of two objects, comparing the value of each property at each step.
 
@@ -68,14 +68,14 @@ And example below
 // Let's consider following shape of user object
 
 user = {
-  name: 'John',
-  surname: 'Doe',
+  name: "John",
+  surname: "Doe",
 }
 
 // Now change the state.
 
 const user = this.state.user
-user.name = 'Jane'
+user.name = "Jane"
 
 console.log(user === this.state.user) // true
 
@@ -84,7 +84,7 @@ console.log(user === this.state.user) // true
 
 It's for this improvement in performance that Redux uses shallow equality checking.
 
-#### However now a natural question is - Doesn't Redux mitigate deep comparisons with essentially deep cloning? Isn't it just moving the expensive operations to a different point in the lifecycle ?
+### However now a natural question is - Doesn't Redux mitigate deep comparisons with essentially deep cloning? Isn't it just moving the expensive operations to a different point in the lifecycle ?
 
 #### And the ans
 
@@ -97,12 +97,12 @@ To update state immutability all the way down, a shallow copy at the level you'r
 ```js
 let state = {
   a: {
-    a1: 'a1 initial value',
-    a2: 'a2 initial value',
+    a1: "a1 initial value",
+    a2: "a2 initial value",
   },
   b: {
-    b1: 'b1 initial value',
-    b2: 'b2 initial value',
+    b1: "b1 initial value",
+    b2: "b2 initial value",
   },
 }
 ```
@@ -114,7 +114,7 @@ state = {
   ...state,
   a: {
     ...state.a,
-    a1: 'updated a1',
+    a1: "updated a1",
   },
 }
 ```
@@ -126,9 +126,9 @@ state = {
 An example
 
 ```js
-import { combineReducers } from 'redux'
-import userSignupReducer from './userSignupReducer'
-import commonEMIOptionsReducer from './commonEMIOptionsReducer'
+import { combineReducers } from "redux"
+import userSignupReducer from "./userSignupReducer"
+import commonEMIOptionsReducer from "./commonEMIOptionsReducer"
 
 export default combineReducers({
   user: userSignupReducer,

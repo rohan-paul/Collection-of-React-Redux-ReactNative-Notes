@@ -1,30 +1,10 @@
-const isMomHappy = true;
-// Define a function to return a Promise
-const willIGetNewPhone = new Promise((resolve, reject) => {
-  if (isMomHappy) {
-    const phone = {
-      brand: "Samsung",
-      color: "black"
-    };
-    resolve(phone);
-  } else {
-    const reason = new Error("Mom is not happy");
-    reject(reason);
-  }
-});
+function foo4() {
+  console.log(this === global)
+}
+foo4() // => true
 
-const showOff = phone => {
-  const message =
-    "Hey friend, I have a new " + phone.color + " " + phone.brand + " phone";
-  return Promise.resolve(message);
-};
-
-// call out promise
-const askMom = () => {
-  willIGetNewPhone
-    .then(showOff)
-    .then(fullfilled => console.log(fullfilled))
-    .then(error => console.log(error.message));
-};
-
-askMom();
+function foo5() {
+  "use strict"
+  console.log(this === undefined)
+}
+foo5() // => true

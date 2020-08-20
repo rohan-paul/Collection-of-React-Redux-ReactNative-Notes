@@ -38,7 +38,7 @@ class Autocomp extends React.Component {
             <div className='autocomp_wrapper'>
                 <input placeholder="Enter your search.." onChange={this.handleInputThrottled} />
                 <div>
-                    {results.map(result=>{result})}
+                    {results.map(result=>{result})}****
                 </div>
             </div>
         );
@@ -49,6 +49,6 @@ class Autocomp extends React.Component {
 
 The throttle function is passed a function that wants to be throttled and the amount of time it is to be throttled, it returns a function that is throttled. Here in our case, the handleInput method is passed to the throttle function and we want it to be throttled to 100ms.
 
-Now, if we type fidudusola at a normal speed of 1 letter per 200ms. In our throttled comp it would take 10 \* 200ms = (2000ms) 2s to type fidudusola that is the handleInput method would be called 2 (2000ms/ 100ms = 2) times instead of 10 times initially in our non-throttled autocomp component.
+Now, if we type **fidudusola** (which has 10 letters) at a normal speed of 1 letter per 200ms. In our throttled comp it would take 10 \* 200ms = (2000ms) 2s to type **fidudusola** that is the handleInput method would be called 2 (2000ms/ 100ms = 2) times instead of 10 times initially in our non-throttled autocomp component.
 
-See our component would have to update twice for typing fidudusola it is appreciable for the 10-letter word, other than the 10 re-renders for the initial non-throttled component.
+See our component would have to update twice for typing **fidudusola** it is appreciable for the 10-letter word, other than the 10 re-renders for the initial non-throttled component.
